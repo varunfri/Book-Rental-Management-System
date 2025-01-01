@@ -1,0 +1,112 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
+        <link rel="stylesheet" href="css/cont.css">
+        <title>Document</title>
+    </head>
+    <style>
+        body{
+    background-image: url('images/lapbg.jpg'); /* Adjust the path to your background image */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+     
+        }
+    </style>
+    <body>
+        
+        <section class="contact">
+            
+            <div class="content">
+                <h1><b> CONTACT US </b></h1>
+            
+            </div>
+            <div class="container">
+                <div class="contactInfo">
+                    <div class="box">
+                        <div class="icon"><i class="fas fa-map-marker" aria-hidden="true"></i></div>
+                            <div class="text">
+                                <h3 style="color: black;">Address</h3>
+                                <p>Bengaluru<br>Karnataka<br>560067</p>
+                            </div>
+                    
+                    </div>
+                    <div class="box">
+                        <div class="icon"><i class="fas fa-phone-alt" aria-hidden="true"></i></div>
+                            <div class="text">
+                                <h3 style="color: black;">Phone</h3>
+                                <p>9448140164</p>
+                            </div>
+                    </div>
+                    <div class="box">
+                        <div class="icon"><i class="fas fa-envelope" aria-hidden="true"></i></div>
+                            <div class="text">
+                                <h3 style="color: black;">Gmail</h3>
+                                <p>varunvishwanath1@gmail.com</p>
+                            </div>
+                    </div>
+
+                </div>
+                <div class="contactForm">
+                    <form>
+                        <h2>Send Message</h2>
+                        <div class="inputBox">
+                            <input title="user" type="text" id="username" required="required">
+                            <span>Full Name</span>
+
+                        </div>
+                        <div class="inputBox">
+                            <input title="email" type="text" id="email" required="required">
+                            <span>Email</span>
+                        </div>
+                        <div class="inputBox">
+                            <textarea title="message"  id= "msg" required="required" name="message"></textarea>
+                            <span>Type your Message...</span>
+                        </div>
+                        <div class="inputBox">
+                            <input type="submit" name="" value="Send" onclick="alerting()">
+                        <button class="btn" style="
+                            width: 150px;
+                            border-radius: 10px;
+                            background: orange;
+                            color: #fff;
+                            border: none;
+                            cursor: pointer;
+                            padding: 10px;
+                            font-size: 18px;
+                            margin-left:100px;
+                        "><a href="lapdetails.php" style="
+                        text-decoration: none;
+                        color: #fff;">Go To Home</a></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+        
+    </body>
+    <script>
+            function alerting(){
+            // Retrieve the values of username, email, and message fields
+            let username = document.getElementById("username").value;
+            let email = document.getElementById("email").value;
+            let message = document.querySelector('textarea[name="message"]').value;
+    
+            
+            // Check if any of the fields are empty
+            if (username.trim() === '' || email.trim() === '' || message.trim() === '') {
+                // Show an alert if any of the fields are empty
+                alert("Please fill in all the fields.");
+            } else {
+                // If all fields are filled, proceed with sending the message
+                // alert("Username: " + username + "\nEmail: " + email + "\nMessage: " + message);
+                alert("Message sent!")
+            }
+        }
+    </script>
+    </html>

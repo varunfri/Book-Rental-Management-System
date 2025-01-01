@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Preview</title>
+    <style>
+        /* Basic styles for the modal and loading spinner */
+        #modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        #modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+
+        .loading-spinner {
+            border: 16px solid #f3f3f3;
+            border-top: 16px solid #3498db;
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            animation: spin 2s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+    <script type="text/javascript" src="https://www.google.com/books/jsapi.js"></script>
+    <script>
+        const API_KEY = 'AIzaSyBnsBxf9DyK3Us_jQPU4xjJToWDDwbIxDI'; // Replace with your actual API key
+
+        function loadGoogleBooksApi() {
+            google.books.load();
+        }
+
+        // function previewBook(book_name, isbn) 
+        // {
+        //     var modal = document.getElementById('modal');
+        //     var modalContent = document.getElementById('modal-content');
+           
+        //     modal.style.display = "block";
+        //     modalContent.innerHTML = `
+        //         <h1 class="h1">${book_name}</h1>
+        //         <br>
+        //         <div class="loading-spinner" id="loading-spinner"></div>
+        //         <div>
+        //             <center> 
+        //               <div id="viewerCanvas" style="width: 600px; height: 600px; border: 1px solid #ccc; margin-top: 20px;"></div>
+        //             </center>
+        //         </div> 
+        //     `;
+            
+        //     if (isbn) {
+        //         const url = `https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}&key=${API_KEY}`;
+               
+        //         fetch(url)
+        //             .then(response => response.json())
+        //             .then(data => {
+        //                 if (data.items && data.items.length > 0) {
+        //                     embedBook(isbn);
+        //                 } else {
+        //                     modalContent.innerHTML += `<p>No book found with this ISBN.</p>`;
+        //                     document.getElementById('loading-spinner').style.display = 'none';
+        //                 }
+        //             })
+        //             .catch(error => {
+        //                 console.error('Error:', error);
+        //                 modalContent.innerHTML += `<p>Error fetching book details.</p>`;
+        //                 document.getElementById('loading-spinner').style.display = 'none';
+        //             });
+        //     } else {
+        //         modalContent.innerHTML += `<p>Please enter an ISBN.</p>`;
+        //         document.getElementById('loading-spinner').style.display = 'none';
+        //     }
+        // }
+
+        //     function embedBook(isbn) 
+        //     {
+        //     const viewer = new google.books.DefaultViewer(document.getElementById('viewerCanvas'));
+        //     viewer.load('ISBN:' + isbn, function(success) {
+        //         if (!success) {
+        //             console.error('Error loading Google Book Viewer.');
+        //         }
+        //         document.getElementById('loading-spinner').style.display = 'none';
+        //     });
+        //     }
+
+        //     function closeModal() {
+        //     var modal = document.getElementById('modal');
+        //     if (modal) {
+        //         modal.style.display = "none";
+        //     } else {
+        //         console.error('Modal not found.');
+        //     }
+        // }
+
+        function previewBook(book_name, isbn) {
+    var modal = document.getElementById('modal');
+    var modalContent = document.getElementById('modal-content');
+    var spinner = document.getElementById('loading-spinner');
+
+    modal.style.display = "block";
+    modalContent.innerHTML = `
+        <h1 class="h1">${book_name}</h1>
+        <br>
+        <div class="loading-spinner" id="loading-spinner"></div>
+        <div>
+            <center> 
+                <div id="viewerCanvas" style="width: 600px; height: 600px; border: 1px solid #ccc; margin-top: 20px;"></div>
+            </center>
+        </div> 
+    `;
+    spinner.style.display = 'block'; // Ensure spinner is shown initially
+
+    if (isbn) {
+        const url = `https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}&key=${API_KEY}`;
+
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                if (data.items && data.items.length > 0) {
+                    embedBook(isbn);
+                } else {
+                    modalContent.innerHTML += `<p>No book found with this ISBN.</p>`;
+                    spinner.style.display = 'none'; // Hide spinner if no book found
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                modalContent.innerHTML += `<p>Error fetching book details.</p>`;
+                spinner.style.display = 'none'; // Hide spinner on error
+            });
+    } else {
+        modalContent.innerHTML += `<p>Please enter an ISBN.</p>`;
+        spinner.style.display = 'none'; // Hide spinner if no ISBN provided
+    }
+}
+
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === "Escape") {
+                closeModal();
+            }
+        });
+
+        window.addEventListener('click', function(event) {
+            var modal = document.getElementById('modal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        });
+
+        google.books.setOnLoadCallback(loadGoogleBooksApi);
+    </script>
+</head>
+<body>
+    <!-- The modal structure -->
+    <div id="modal">
+        <div id="modal-content"></div>
+    </div>
+
+    <!-- Example usage -->
+    <button onclick="previewBook('Example Book', '1583942939')">Preview Book</button>
+</body>
+</html>

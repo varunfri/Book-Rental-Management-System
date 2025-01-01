@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Embed Google Book by ISBN</title>
+    <script src="https://www.google.com/books/jsapi.js"></script>
+</head>
+<body>
+    <h1>Google Books Viewer</h1>
+    <input type="text" id="isbnInput" placeholder="Enter ISBN">
+    <button onclick="searchAndEmbedBook()">Embed Book</button>
+    <div id="results" style="margin-top: 20px;"></div>
+    <div id="viewerCanvas" style="width: 600px; height: 800px; border: 1px solid #ccc; margin-top: 20px;"></div>
+
+    
+    <script>
+        const API_KEY = 'AIzaSyBnsBxf9DyK3Us_jQPU4xjJToWDDwbIxDI'; // Replace with your actual API key
+const isbn = document.getElementById('isbnInput').value;
+        function loadGoogleBooksApi() {
+            google.books.load();
+        }
+
+        function searchAndEmbedBook() {
+            
+            if (isbn) {
+                const url = `https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}&key=${API_KEY}`;
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.items && data.items.length > 0) {
+                            embedBook(isbn);
+                        } else {
+                            alert('No book found with this ISBN.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Error fetching book details.');
+                    });
+            } else {
+                alert('Please enter an ISBN.');
+            }
+        }
+
+        function embedBook(isbn) {
+            const viewer = new google.books.DefaultViewer(document.getElementById('viewerCanvas'));
+            viewer.load('ISBN:' + isbn, displayError);
+        }
+
+        function displayBookDetails(book) {
+            const volumeInfo = book.volumeInfo;
+            const title = volumeInfo.title || 'No title';
+            const authors = volumeInfo.authors ? volumeInfo.authors.join(', ') : 'No authors';
+            const description = volumeInfo.description || 'No description';
+
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = `
+                <h2>${title}</h2>
+                <p><strong>Authors:</strong> ${authors}</p>
+                <p><strong>Description:</strong> ${description}</p>
+            `;
+        }
+
+        function displayError(error) {
+            if (error) {
+                document.getElementById('viewerCanvas').innerText = 'Error: Could not load the book preview. Please check the ISBN and try again.';
+                console.error('Google Books Viewer Error:', error);
+            }
+        }
+
+        google.books.setOnLoadCallback(loadGoogleBooksApi);
+    </script>
+</body>
+</html>
